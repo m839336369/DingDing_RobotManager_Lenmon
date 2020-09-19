@@ -95,32 +95,63 @@ namespace Native.Core
                                         $"群名: {gn}\n" +
                                         $"消息内容: \n" +
                                         $"{e.Msg}");
-                                    try
-                                    {
-                                        if (Customize.config.CSV)
-                                        {
-                                            string title;
-                                            if (e.Msg.Length > 20) title = e.Msg.Substring(0, 20);
-                                            else title = e.Msg;
-                                            Robot.Write_Key_Log(config.f[i], DateTime.Now, e.FromQQ, nick, e.FromGroup, gn, e.Msg, "群聊");
-                                        }
-                                        if (Customize.config.SMTP)
-                                        {
-                                            string title;
-                                            if (e.Msg.Length > 20) title = e.Msg.Substring(0, 20);
-                                            else title = e.Msg;
-                                            string msg = $"关键字:{config.f[i] }\n方式:群聊\n日期:{DateTime.Now.ToString()}\nQQ号:{nick }\nQQ昵称:{Robot.GetNick(e.FromQQ)}\n群号码:{e.FromGroup}\n群名称:{gn}\n消息内容:{e.Msg}";
-                                            Robot.SendEmail(config.SMTP_User, config.SMTP_Pass, config.SMTP_Acieve, config.SMTP_Server, title, msg);
-                                        }
-                                    }
-                                    catch(Exception err)
-                                    {
-                                        WS.Log(err.Message);
-                                    }
                                 }
                                 else
                                 {
-                                    Events.Msg(new GroupMsgArgs(e.FromQQ, config.fg, e.Msg));
+                                    WS.MessageForSend data = new WS.MessageForSend
+                                    {
+                                        rid = WS.Rid(),
+                                        from = e.FromQQ,
+                                        content = e.Msg,
+                                        qun = config.fg
+                                    };
+                                    //优先从缓存中查找数据
+                                    if (!WS.cacheQQ.TryGetValue(e.FromQQ, out data.fromname))
+                                    {
+                                        var qqInfo = Robot.GetNick(e.FromQQ);
+                                        if (qqInfo != null)
+                                        {
+                                            data.fromname = qqInfo;
+                                            WS.cacheQQ.TryAdd(e.FromQQ, qqInfo);
+                                        }
+                                        else
+                                        {
+                                            WS.Log("群消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
+                                            return;
+                                        }
+                                    }
+
+                                    //优先从缓存中查找数据
+                                    if (!WS.cacheGroup.TryGetValue(config.fg, out data.qunname))
+                                    {
+                                        var groupInfo = Robot.GetGroupName(config.fg);
+                                        if (groupInfo != null)
+                                        {
+                                            data.qunname = groupInfo;
+                                            WS.cacheGroup.TryAdd(config.fg, groupInfo);
+                                        }
+                                        else
+                                        {
+                                            WS.Log("群消息接口没有获取到群信息, 群号码:" + config.fg);
+                                            return;
+                                        }
+                                    }
+                                    WS.postMessage(data);
+                                }
+                                if (Customize.config.CSV)
+                                {
+                                    string title;
+                                    if (e.Msg.Length > 20) title = e.Msg.Substring(0, 20);
+                                    else title = e.Msg;
+                                    Robot.Write_Key_Log(config.f[i], DateTime.Now, e.FromQQ, Robot.GetNick(e.FromQQ), e.FromGroup, Robot.GetGroupName(config.fg), e.Msg, "群聊");
+                                }
+                                if (Customize.config.SMTP)
+                                {
+                                    string title;
+                                    if (e.Msg.Length > 20) title = e.Msg.Substring(0, 20);
+                                    else title = e.Msg;
+                                    string msg = $"关键字:{config.f[i] }\n方式:群聊\n日期:{DateTime.Now.ToString()}\nQQ号:{e.FromQQ}\nQQ昵称:{Robot.GetNick(e.FromQQ)}\n群号码:{e.FromGroup}\n群名称:{Robot.GetGroupName(config.fg)}\n消息内容:{e.Msg}";
+                                    Robot.SendEmail(config.SMTP_User, config.SMTP_Pass, config.SMTP_Acieve, config.SMTP_Server, title, msg);
                                 }
                             }
                         }
