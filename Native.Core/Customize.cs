@@ -37,6 +37,9 @@ namespace Native.Core
             public string SMTP_Pass;
             public string SMTP_Acieve;
             public string SMTP_Server;
+            public string SMTP_Port;
+            public bool SMTP_SSL;
+
         }
         public static Config config = new Config();
         internal static string configPath;
@@ -151,7 +154,7 @@ namespace Native.Core
                                     if (e.Msg.Length > 20) title = e.Msg.Substring(0, 20);
                                     else title = e.Msg;
                                     string msg = $"关键字:{config.f[i] }\n方式:群聊\n日期:{DateTime.Now.ToString()}\nQQ号:{e.FromQQ}\nQQ昵称:{Robot.GetNick(e.FromQQ)}\n群号码:{e.FromGroup}\n群名称:{Robot.GetGroupName(config.fg)}\n消息内容:{e.Msg}";
-                                    Robot.SendEmail(config.SMTP_User, config.SMTP_Pass, config.SMTP_Acieve, config.SMTP_Server, title, msg);
+                                    Robot.SendEmail(config.SMTP_User, config.SMTP_Pass, config.SMTP_Acieve, config.SMTP_Server, title, msg,config.SMTP_Port,config.SMTP_SSL);
                                 }
                             }
                         }

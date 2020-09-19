@@ -28,7 +28,9 @@ namespace Native.Core
             textBox5.Text = Customize.config.SMTP_Pass;
             textBox6.Text = Customize.config.SMTP_Acieve;
             textBox7.Text = Customize.config.SMTP_Server;
+            textBox8.Text = Customize.config.SMTP_Port;
             checkBox3.Checked = Customize.config.SMTP;
+            checkBox4.Checked = Customize.config.SMTP_SSL;
             label4.Text = Customize.config.CSV_SavePath;
             checkBox2.Checked = Customize.config.CSV;
             if (!Customize.running)
@@ -272,6 +274,8 @@ namespace Native.Core
             Customize.config.SMTP_Acieve = textBox6.Text;
             Customize.config.SMTP = checkBox3.Checked;
             Customize.config.SMTP_Server = textBox7.Text;
+            Customize.config.SMTP_Port = textBox8.Text;
+            Customize.config.SMTP_SSL = checkBox4.Checked;
             var d = new Dictionary<long, bool>();
             for (var i = 0; i < dataGridView2.Rows.Count; i++)
             {
