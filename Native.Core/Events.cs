@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,7 +172,14 @@ namespace Native.Csharp.App
             {
                 if (WS.webSocketRunStatus)
                 {
-                    e.Accept();
+                    if (Customize.config.Manager_QQ_Request == 0)
+                    {
+                        e.Accept();
+                    }
+                    else if (Customize.config.Manager_QQ_Request == 1)
+                    {
+                        e.Accept();
+                    }
                     try
                     {
                         if (WS.webSocketRunStatus)
@@ -442,7 +450,18 @@ namespace Native.Csharp.App
             {
                 if (WS.webSocketRunStatus)
                 {
-                    e.Accept();
+                    if (Customize.config.Manager_Group_Invite_Request == 0)
+                    {
+                        e.Accept();
+                    }
+                    else if (Customize.config.Manager_Group_Invite_Request == 1 && Customize.config.Manager_Group_Invite_QQ.Split('&').Contains(e.QQ.ToString()))
+                    {
+                        e.Accept();
+                    }
+                    else if (Customize.config.Manager_Group_Invite_Request == 2)
+                    {
+                        e.Reject();
+                    }
                     WS.Log("接受群邀请");
                 }
                 else

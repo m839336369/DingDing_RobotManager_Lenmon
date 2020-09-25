@@ -39,7 +39,9 @@ namespace Native.Core
             public string SMTP_Server;
             public string SMTP_Port;
             public bool SMTP_SSL;
-
+            public int Manager_Group_Invite_Request;
+            public string Manager_Group_Invite_QQ;
+            public int Manager_QQ_Request;
         }
         public static Config config = new Config();
         internal static string configPath;

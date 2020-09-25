@@ -33,6 +33,9 @@ namespace Native.Core
             checkBox4.Checked = Customize.config.SMTP_SSL;
             label4.Text = Customize.config.CSV_SavePath;
             checkBox2.Checked = Customize.config.CSV;
+            textBox9.Text = Customize.config.Manager_Group_Invite_QQ;
+            comboBox2.SelectedIndex = Customize.config.Manager_Group_Invite_Request;
+            comboBox3.SelectedIndex = Customize.config.Manager_QQ_Request;
             if (!Customize.running)
             {
                 MessageBox.Show("机器人不存在或已删除，此功能将不会工作");
@@ -276,6 +279,9 @@ namespace Native.Core
             Customize.config.SMTP_Server = textBox7.Text;
             Customize.config.SMTP_Port = textBox8.Text;
             Customize.config.SMTP_SSL = checkBox4.Checked;
+            Customize.config.Manager_Group_Invite_QQ = textBox9.Text;
+            Customize.config.Manager_Group_Invite_Request = comboBox2.SelectedIndex;
+            Customize.config.Manager_QQ_Request = comboBox3.SelectedIndex;
             var d = new Dictionary<long, bool>();
             for (var i = 0; i < dataGridView2.Rows.Count; i++)
             {
