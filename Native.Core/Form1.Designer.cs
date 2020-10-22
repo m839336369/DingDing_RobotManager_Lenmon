@@ -34,6 +34,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button13 = new System.Windows.Forms.Button();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -140,11 +144,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel12.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -186,7 +189,6 @@
             this.tableLayoutPanel18.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button13
@@ -217,6 +219,48 @@
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(1370, 749);
             this.tableLayoutPanel12.TabIndex = 5;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.button13);
+            this.flowLayoutPanel2.Controls.Add(this.comboBox2);
+            this.flowLayoutPanel2.Controls.Add(this.textBox9);
+            this.flowLayoutPanel2.Controls.Add(this.comboBox3);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1364, 27);
+            this.flowLayoutPanel2.TabIndex = 6;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "同意所有拉群申请",
+            "同意特定号码",
+            "拒绝所有拉群申请"});
+            this.comboBox2.Location = new System.Drawing.Point(181, 3);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 20);
+            this.comboBox2.TabIndex = 6;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(308, 3);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(142, 21);
+            this.textBox9.TabIndex = 7;
+            this.textBox9.Text = "特定QQ:多个QQ号用&隔开";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "同意所有好友申请",
+            "拒绝所有好友申请"});
+            this.comboBox3.Location = new System.Drawing.Point(456, 3);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(121, 20);
+            this.comboBox3.TabIndex = 8;
             // 
             // tabControl2
             // 
@@ -545,7 +589,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(865, 628);
+            this.tabPage2.Size = new System.Drawing.Size(865, 604);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "关键词回复";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -564,7 +608,7 @@
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(861, 624);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(861, 600);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // dataGridView1
@@ -584,7 +628,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 30;
             this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(340, 620);
+            this.dataGridView1.Size = new System.Drawing.Size(340, 596);
             this.dataGridView1.TabIndex = 1;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -620,7 +664,7 @@
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.RowHeadersWidth = 30;
             this.dataGridView3.RowTemplate.Height = 66;
-            this.dataGridView3.Size = new System.Drawing.Size(513, 620);
+            this.dataGridView3.Size = new System.Drawing.Size(513, 596);
             this.dataGridView3.TabIndex = 0;
             // 
             // 回复内容
@@ -637,7 +681,7 @@
             this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage4.Size = new System.Drawing.Size(1358, 701);
+            this.tabPage4.Size = new System.Drawing.Size(1358, 677);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "自动私聊和欢迎";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -655,7 +699,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1354, 697);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1354, 673);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // groupBox4
@@ -667,7 +711,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBox4.Size = new System.Drawing.Size(877, 693);
+            this.groupBox4.Size = new System.Drawing.Size(877, 669);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "设置欢迎语与回复规则";
@@ -685,7 +729,7 @@
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(877, 674);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(877, 650);
             this.tableLayoutPanel11.TabIndex = 3;
             // 
             // tabControl3
@@ -698,7 +742,7 @@
             this.tabControl3.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(873, 662);
+            this.tabControl3.Size = new System.Drawing.Size(873, 638);
             this.tabControl3.TabIndex = 2;
             // 
             // tabPage5
@@ -708,7 +752,7 @@
             this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage5.Size = new System.Drawing.Size(865, 628);
+            this.tabPage5.Size = new System.Drawing.Size(865, 604);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "入群欢迎";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -726,7 +770,7 @@
             this.tableLayoutPanel10.RowCount = 2;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(861, 624);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(861, 600);
             this.tableLayoutPanel10.TabIndex = 3;
             // 
             // checkBox1
@@ -748,7 +792,7 @@
             this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(857, 590);
+            this.textBox2.Size = new System.Drawing.Size(857, 566);
             this.textBox2.TabIndex = 2;
             // 
             // tabPage6
@@ -853,7 +897,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(469, 693);
+            this.groupBox2.Size = new System.Drawing.Size(469, 669);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "选择启用的群";
@@ -871,7 +915,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(465, 670);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(465, 646);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // tableLayoutPanel4
@@ -982,7 +1026,7 @@
             this.dataGridView4.RowHeadersWidth = 30;
             this.dataGridView4.RowTemplate.Height = 50;
             this.dataGridView4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView4.Size = new System.Drawing.Size(461, 626);
+            this.dataGridView4.Size = new System.Drawing.Size(461, 602);
             this.dataGridView4.TabIndex = 2;
             // 
             // dataGridViewCheckBoxColumn1
@@ -1235,6 +1279,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.comboBox5);
+            this.groupBox6.Controls.Add(this.comboBox4);
             this.groupBox6.Controls.Add(this.tableLayoutPanel17);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -1544,47 +1590,31 @@
             this.textBox3.Size = new System.Drawing.Size(430, 600);
             this.textBox3.TabIndex = 4;
             // 
-            // flowLayoutPanel2
+            // comboBox4
             // 
-            this.flowLayoutPanel2.Controls.Add(this.button13);
-            this.flowLayoutPanel2.Controls.Add(this.comboBox2);
-            this.flowLayoutPanel2.Controls.Add(this.textBox9);
-            this.flowLayoutPanel2.Controls.Add(this.comboBox3);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(1364, 27);
-            this.flowLayoutPanel2.TabIndex = 6;
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "【新人入群】不转发",
+            "【新人入群】真实转发",
+            "【新人入群】模拟转发"});
+            this.comboBox4.Location = new System.Drawing.Point(113, 1);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(162, 28);
+            this.comboBox4.TabIndex = 10;
+            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
-            // comboBox2
+            // comboBox5
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "同意所有拉群申请",
-            "同意特定号码",
-            "拒绝所有拉群申请"});
-            this.comboBox2.Location = new System.Drawing.Point(181, 3);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 20);
-            this.comboBox2.TabIndex = 6;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(308, 3);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(142, 21);
-            this.textBox9.TabIndex = 7;
-            this.textBox9.Text = "特定QQ:多个QQ号用&隔开";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "同意所有好友申请",
-            "拒绝所有好友申请"});
-            this.comboBox3.Location = new System.Drawing.Point(456, 3);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 20);
-            this.comboBox3.TabIndex = 8;
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "【新人退群】不转发",
+            "【新人退群】真实转发",
+            "【新人退群】模拟转发"});
+            this.comboBox5.Location = new System.Drawing.Point(281, 1);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(157, 28);
+            this.comboBox5.TabIndex = 10;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -1601,6 +1631,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel12.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -1648,8 +1680,6 @@
             this.flowLayoutPanel1.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1767,5 +1797,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox comboBox4;
     }
 }

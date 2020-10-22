@@ -42,6 +42,8 @@ namespace Native.Core
             public int Manager_Group_Invite_Request;
             public string Manager_Group_Invite_QQ;
             public int Manager_QQ_Request;
+            public int member_enter_send;
+            public int member_leave_send;
         }
         public static Config config = new Config();
         internal static string configPath;

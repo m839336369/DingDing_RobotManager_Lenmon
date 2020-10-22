@@ -36,6 +36,8 @@ namespace Native.Core
             textBox9.Text = Customize.config.Manager_Group_Invite_QQ;
             comboBox2.SelectedIndex = Customize.config.Manager_Group_Invite_Request;
             comboBox3.SelectedIndex = Customize.config.Manager_QQ_Request;
+            comboBox4.SelectedIndex = Customize.config.member_enter_send;
+            comboBox5.SelectedIndex = Customize.config.member_leave_send;
             if (!Customize.running)
             {
                 MessageBox.Show("机器人不存在或已删除，此功能将不会工作");
@@ -282,6 +284,8 @@ namespace Native.Core
             Customize.config.Manager_Group_Invite_QQ = textBox9.Text;
             Customize.config.Manager_Group_Invite_Request = comboBox2.SelectedIndex;
             Customize.config.Manager_QQ_Request = comboBox3.SelectedIndex;
+            Customize.config.member_enter_send = comboBox4.SelectedIndex;
+            Customize.config.member_leave_send = comboBox5.SelectedIndex;
             var d = new Dictionary<long, bool>();
             for (var i = 0; i < dataGridView2.Rows.Count; i++)
             {
@@ -422,6 +426,16 @@ namespace Native.Core
         private void checkBox3_CheckedChanged_1(object sender, EventArgs e)
         {
             Customize.config.SMTP = ((CheckBox)sender).Checked;
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Customize.config.member_enter_send = ((ComboBox)sender).SelectedIndex;
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Customize.config.member_leave_send = ((ComboBox)sender).SelectedIndex;
         }
     }
 }

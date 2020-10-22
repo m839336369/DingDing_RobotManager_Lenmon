@@ -280,7 +280,7 @@ namespace Native.Csharp.App
                         WS.MessageForSend data = new WS.MessageForSend();
                         data.rid = WS.Rid();
                         data.from = e.BeingOperateQQ;
-                        data.content = "[入群通知]";
+                        data.content = $"[入群通知]:\n入群用户:{data.from}\n入群时间:{DateTime.Now}";
                         data.qun = e.Group;
                         //优先从缓存中查找数据
                         if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out data.fromname))
@@ -312,7 +312,29 @@ namespace Native.Csharp.App
                                 return;
                             }
                         }
-                        WS.postMessage(data);
+                        if (Customize.config.member_enter_send == 1)
+                        {
+                            if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out var nick))
+                            {
+                                nick = Robot.GetNick(e.BeingOperateQQ);
+                                WS.cacheQQ.TryAdd(e.FromQQ, nick);
+                            }
+                            if (!WS.cacheGroup.TryGetValue(e.BeingOperateQQ, out var gn))
+                            {
+                                gn = Robot.GetGroupName(e.Group);
+                                WS.cacheGroup.TryAdd(e.Group, gn);
+                            }
+                            Robot.Send.Group(Customize.config.fg, $"QQ: {e.BeingOperateQQ}\n" +
+                                $"昵称: {nick}\n" +
+                                $"群号: {e.Group}\n" +
+                                $"群名: {gn}\n" +
+                                $"消息内容: \n" +
+                                $"{data}");
+                        }
+                        else if (Customize.config.member_enter_send == 2)
+                        {
+                            WS.postMessage(data);
+                        }
                     }
 
                 }
@@ -341,7 +363,7 @@ namespace Native.Csharp.App
                         WS.MessageForSend data = new WS.MessageForSend();
                         data.rid = WS.Rid();
                         data.from = e.BeingOperateQQ;
-                        data.content = "[退群通知]";
+                        data.content = $"[退群通知]:\n入群用户:{data.from}\n入群时间:{DateTime.Now}";
                         data.qun = e.Group;
                         //优先从缓存中查找数据
                         if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out data.fromname))
@@ -373,7 +395,29 @@ namespace Native.Csharp.App
                                 return;
                             }
                         }
-                        WS.postMessage(data);
+                        if (Customize.config.member_leave_send == 1)
+                        {
+                            if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out var nick))
+                            {
+                                nick = Robot.GetNick(e.BeingOperateQQ);
+                                WS.cacheQQ.TryAdd(e.FromQQ, nick);
+                            }
+                            if (!WS.cacheGroup.TryGetValue(e.BeingOperateQQ, out var gn))
+                            {
+                                gn = Robot.GetGroupName(e.FromQQ);
+                                WS.cacheGroup.TryAdd(e.FromQQ, gn);
+                            }
+                            Robot.Send.Group(Customize.config.fg, $"QQ: {e.BeingOperateQQ}\n" +
+                                $"昵称: {nick}\n" +
+                                $"群号: {e.FromQQ}\n" +
+                                $"群名: {gn}\n" +
+                                $"消息内容: \n" +
+                                $"{data.content}");
+                        }
+                        else if (Customize.config.member_leave_send == 2)
+                        {
+                            WS.postMessage(data);
+                        }
                     }
 
                 }
