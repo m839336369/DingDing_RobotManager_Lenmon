@@ -331,10 +331,8 @@ namespace Native.Csharp.App
                                 $"消息内容: \n" +
                                 $"{data}");
                         }
-                        else if (Customize.config.member_enter_send == 2)
-                        {
-                            WS.postMessage(data);
-                        }
+                        data.content = "[入群通知]";
+                        WS.postMessage(data);
                     }
 
                 }
@@ -414,10 +412,8 @@ namespace Native.Csharp.App
                                 $"消息内容: \n" +
                                 $"{data.content}");
                         }
-                        else if (Customize.config.member_leave_send == 2)
-                        {
-                            WS.postMessage(data);
-                        }
+                        data.content = "[退群通知]";
+                        WS.postMessage(data);
                     }
 
                 }
