@@ -48,10 +48,6 @@ namespace Native.Csharp.App
             switch (type)
             {
                 case 1:
-                case 4:
-                    //私聊消息
-                    Events.Msg(new FriendMsgArgs(sq, msg));
-                    break;
                 case 2:
                     //群消息
                     Events.Msg(new GroupMsgArgs(sq, g, msg));
@@ -62,41 +58,26 @@ namespace Native.Csharp.App
         [DllExport(CallingConvention.StdCall)]
         static int _eventRequest_AddFriend(long qqid, int st, int q, string msg)
         {
-            Events.AddFriend(new RequestAddFriendArgs(q, msg));
             return 0;
         }
         [DllExport(CallingConvention.StdCall)]
         static int _eventSystem_GroupMemberIncrease(long a, int b, int c, long d, long e, long f)
         {
-            Events.GroupAddMember(new GroupMemberChangedArgs(d, e, f));
             return 0;
         }
         [DllExport(CallingConvention.StdCall)]
         static int _eventSystem_GroupMemberDecrease(long a, int b, int c, long d, long e, long f)
         {
-            Events.GroupLeftMember(new GroupMemberChangedArgs(d, e, f));
             return 0;
         }
         [DllExport(CallingConvention.StdCall)]
         static int _eventRequest_AddGroup(long a, int b, string c, int d, long e, long f, long g, string h, int i)
         {
-            if (b == 104 || b == 102)
-            {
-                Events.JoinGroupRequest(new RequestAddGroupArgs(c, e, f, i, h));
-            }
-            if (b == 105)
-            {
-                Events.InviteGroupRequest(new RequestAddGroupArgs(c, e, f, i, h));
-            }
             return 0;
         }
         [DllExport(CallingConvention.StdCall)]
         static int _eventTipsMsg(long a, int b, long c, long d, long e, string f)
         {
-            if (b == 112)
-            {
-                Events.GroupCardChanged(new GroupCardChangedArgs(c, d, f));
-            }
             return 0;
         }
         [DllExport(CallingConvention.StdCall)]
@@ -294,8 +275,7 @@ namespace Native.Csharp.App
             }
             catch (Exception e)
             {
-                WS.Log(e.Message);
-                WS.Log(e.StackTrace);
+
             }
         }
     }

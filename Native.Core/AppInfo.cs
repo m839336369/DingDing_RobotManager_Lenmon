@@ -18,15 +18,15 @@ namespace Native.Csharp.App
         /// <summary>
         /// 应用ID  1.尽量唯一  2.编译出来需要以 .lq.dll 结尾 方便框架识别
         /// </summary>
-        public readonly string appId = "com.xn.enlovoChat";
+        public readonly string appId = "com.demo.ss";
         /// <summary>
         /// 应用名称
         /// </summary>
-        public readonly string name = "消息监听机器人";
+        public readonly string name = "demo";
         /// <summary>
         /// 应用版本
         /// </summary>
-        public readonly string ver = "1.3.0";
+        public readonly string ver = "1.0.0";
         /// <summary>
         /// 开发者ID ‘预留  随便填
         /// </summary>
@@ -34,15 +34,15 @@ namespace Native.Csharp.App
         /// <summary>
         /// 作者名字
         /// </summary>
-        public readonly string author = "qundingding";
+        public readonly string author = "author";
         /// <summary>
         /// 应用简介
         /// </summary>
-        public readonly string description = "群盯盯群监控挂机工具";
+        public readonly string description = "demo";
         /// <summary>
         /// 应用详情显示的 URL
         /// </summary>
-        public readonly string url = "http://www.ronsir.com/tuoke";
+        public readonly string url = "http://www.baidu.com";
         /// <summary>
         /// 0 表示不需要取 cookies，需要请改为 1
         /// </summary>

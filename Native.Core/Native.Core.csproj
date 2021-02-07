@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Native.Core</RootNamespace>
-    <AssemblyName>com.xn.enlovoChat.lq</AssemblyName>
+    <AssemblyName>com.demo.lq</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -102,18 +102,12 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Lemon\FriendAddedArgs.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="Test.cs" />
-    <Compile Include="WebSocket.cs" />
-    <Compile Include="Lemon\FriendMsgArgs.cs" />
-    <Compile Include="Lemon\GroupAddMemberArgs.cs" />
-    <Compile Include="Lemon\GroupCardChangedArgs.cs" />
     <Compile Include="Lemon\GroupMsgArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Lemon\RequestAddFriendArgs.cs" />
-    <Compile Include="Lemon\RequestAddGroupArgs.cs" />
     <Compile Include="Lemon\Robot.cs" />
+    <Compile Include="DB.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -124,6 +118,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>

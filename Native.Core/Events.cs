@@ -21,7 +21,7 @@ namespace Native.Csharp.App
         internal static void Enable()
         {
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Customize.configPath = AppDomain.CurrentDomain.BaseDirectory + "enlovoconfig";
+            Customize.configPath = AppDomain.CurrentDomain.BaseDirectory + "demo";
             if (File.Exists(Customize.configPath))
                 try
                 {
@@ -31,68 +31,12 @@ namespace Native.Csharp.App
                 {
                     Customize.config = new Customize.Config();
                 }
-            Task.Run(WS.Start);
+            AppInfo.self = long.Parse(Robot.GetQQ());
+            DB.Group();
         }
         
         internal static void Disable()
         {
-        }
-        internal static void Msg(FriendMsgArgs e)
-        {
-            if (e.Msg.StartsWith("群盯盯存图") && e.Msg != "群盯盯存图")
-            {
-                Thread th = new Thread(new ThreadStart(delegate ()
-                {
-                    Application.Run(new Form3(false, e.Msg.GetRight("群盯盯存图")));
-                }));
-                th.TrySetApartmentState(ApartmentState.STA);
-                th.Start();
-            }
-            try
-            {
-                string message = WS.HandleMsg(e.Msg);
-                if (string.IsNullOrWhiteSpace(message))
-                {
-                    return;
-                }
-                if (WS.webSocketRunStatus)
-                {
-                    WS.MessageForSend data = new WS.MessageForSend();
-                    data.rid = WS.Rid();
-                    data.from = e.FromQQ;
-                    data.content = message;
-
-                    //优先从缓存中查找数据
-                    if (!WS.cacheQQ.TryGetValue(e.FromQQ, out data.fromname))
-                    {
-                        var qqInfo = Robot.GetNick(e.FromQQ);
-                        if (qqInfo != null)
-                        {
-                            data.fromname = qqInfo;
-                            WS.cacheQQ.TryAdd(e.FromQQ, qqInfo);
-                        }
-                        else
-                        {
-                            WS.Log("好友消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
-                            return;
-                        }
-                    }
-                    WS.postMessage(data);
-
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理好友消息时发生未知错误, 错误信息:" + ex.Message);
-            }
-        }
-        internal static void GroupCardChanged(GroupCardChangedArgs e)
-        {
-
         }
         internal static void Msg(GroupMsgArgs e)
         {
@@ -108,410 +52,61 @@ namespace Native.Csharp.App
             }
             try
             {
-                Customize.Msg(e);
-                string message = WS.HandleMsg(e.Msg);
+                string message = DB.HandleMsg(e.Msg);
                 if (string.IsNullOrWhiteSpace(message))
                 {
                     return;
                 }
-                if (WS.webSocketRunStatus)
+                if (DB.RunStatus)
                 {
-                    WS.MessageForSend data = new WS.MessageForSend
+                    DB.MessageForSend data = new DB.MessageForSend
                     {
-                        rid = WS.Rid(),
+                        rid = DB.Rid(),
                         from = e.FromQQ,
                         content = message,
                         qun = e.FromGroup
                     };
                     //优先从缓存中查找数据
-                    if (!WS.cacheQQ.TryGetValue(e.FromQQ, out data.fromname))
+                    if (!DB.cacheQQ.TryGetValue(e.FromQQ, out data.fromname))
                     {
                         var qqInfo = Robot.GetNick(e.FromQQ);
                         if (qqInfo != null)
                         {
                             data.fromname = qqInfo;
-                            WS.cacheQQ.TryAdd(e.FromQQ, qqInfo);
+                            DB.cacheQQ.TryAdd(e.FromQQ, qqInfo);
                         }
                         else
                         {
-                            WS.Log("群消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
+                            DB.Log("群消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
                             return;
                         }
                     }
 
                     //优先从缓存中查找数据
-                    if (!WS.cacheGroup.TryGetValue(e.FromGroup, out data.qunname))
+                    if (!DB.cacheGroup.TryGetValue(e.FromGroup, out data.qunname))
                     {
                         var groupInfo = Robot.GetGroupName(e.FromGroup);
                         if (groupInfo != null)
                         {
                             data.qunname = groupInfo;
-                            WS.cacheGroup.TryAdd(e.FromGroup, groupInfo);
+                            DB.cacheGroup.TryAdd(e.FromGroup, groupInfo);
                         }
                         else
                         {
-                            WS.Log("群消息接口没有获取到群信息, 群号码:" + e.FromGroup);
+                            DB.Log("群消息接口没有获取到群信息, 群号码:" + e.FromGroup);
                             return;
                         }
                     }
-                    WS.postMessage(data);
+                    Customize.Msg(e);
                 }
                 else
                 {
-                    WS.Log("WebSocket状态异常");
+                    DB.Log("状态异常");
                 }
             }
             catch (Exception ex)
             {
-                WS.Log("处理群消息时发生未知错误, 错误信息:" + ex.Message);
-            }
-        }
-        internal static void AddFriend(RequestAddFriendArgs e)
-        {
-            try
-            {
-                if (WS.webSocketRunStatus)
-                {
-                    if (Customize.config.Manager_QQ_Request == 0)
-                    {
-                        e.Accept();
-                    }
-                    else if (Customize.config.Manager_QQ_Request == 1)
-                    {
-                        e.Accept();
-                    }
-                    try
-                    {
-                        if (WS.webSocketRunStatus)
-                        {
-                            //推送好友信息
-                            WS.FriendAndQunInfo info = new WS.FriendAndQunInfo();
-                            info.number = e.FromQQ;
-                            info.type = 1;
-                            info.from = 0;
-                            //优先从缓存中查找数据
-                            if (!WS.cacheQQ.TryGetValue(e.FromQQ, out info.name))
-                            {
-                                var qqInfo = Robot.GetNick(e.FromQQ);
-                                if (qqInfo != null)
-                                {
-                                    info.name = qqInfo;
-                                    WS.cacheQQ.TryAdd(e.FromQQ, qqInfo);
-                                }
-                                else
-                                {
-                                    WS.Log("好友消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
-                                    return;
-                                }
-                            }
-                            WS.FriendAndQun friendInfo = new WS.FriendAndQun();
-                            friendInfo.infos = new List<WS.FriendAndQunInfo>();
-                            friendInfo.rid = WS.Rid();
-                            friendInfo.infos.Add(info);
-                            string message = JsonConvert.SerializeObject(friendInfo);
-                            WS.sendMessage(message);
-                            //推送好友添加通知
-                            Task.Run(() =>
-                            {
-                                Thread.Sleep(2000);
-                                WS.MessageForSend data = new WS.MessageForSend();
-                                data.rid = WS.Rid();
-                                data.from = e.FromQQ;
-                                data.content = "[好友添加通知]";
-                                //优先从缓存中查找数据
-                                if (!WS.cacheQQ.ContainsKey(e.FromQQ))
-                                {
-                                    var qqInfo = Robot.GetNick(e.FromQQ);
-                                    if (qqInfo != null)
-                                    {
-                                        data.fromname = qqInfo;
-                                        WS.cacheQQ[e.FromQQ] = qqInfo;
-                                    }
-                                    else
-                                    {
-                                        WS.Log("好友消息接口没有获取到QQ详细信息, QQ号码:" + e.FromQQ);
-                                        return;
-                                    }
-                                }
-                                else
-                                {
-                                    data.fromname = WS.cacheQQ[e.FromQQ].ToString();
-                                }
-                                WS.postMessage(data);
-                            });
-                        }
-                        else
-                        {
-                            WS.Log("WebSocket状态异常");
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        WS.Log("好友添加成功事件发生未知错误,错误原因:" + ex.Message);
-                    }
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理收到好友添加请求出错,错误原因:" + ex.Message);
-            }
-        }
-        internal static void GroupAddMember(GroupMemberChangedArgs e)
-        {
-            try
-            {
-                Customize.Add(e);
-                if (WS.webSocketRunStatus)
-                {
-                    if (e.BeingOperateQQ == AppInfo.self)
-                    {
-                        //自己新进了一个群
-                        WS.SendGroupAndFriend();
-                    }
-                    else
-                    {
-                        //新成员加入
-                        WS.MessageForSend data = new WS.MessageForSend();
-                        data.rid = WS.Rid();
-                        data.from = e.BeingOperateQQ;
-                        data.content = $"[入群通知]:\n入群用户:{data.from}\n入群时间:{DateTime.Now}";
-                        data.qun = e.Group;
-                        //优先从缓存中查找数据
-                        if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out data.fromname))
-                        {
-                            var qqInfo = Robot.GetNick(e.BeingOperateQQ);
-                            if (qqInfo != null)
-                            {
-                                data.fromname = qqInfo;
-                                WS.cacheQQ.TryAdd(e.BeingOperateQQ, qqInfo);
-                            }
-                            else
-                            {
-                                WS.Log("群消息接口没有获取到QQ详细信息, QQ号码:" + e.BeingOperateQQ);
-                                return;
-                            }
-                        }
-
-                        if (!WS.cacheGroup.TryGetValue(e.Group, out data.qunname))
-                        {
-                            var groupInfo = Robot.GetGroupName(e.Group);
-                            if (groupInfo != null)
-                            {
-                                data.qunname = groupInfo;
-                                WS.cacheGroup.TryAdd(e.Group, groupInfo);
-                            }
-                            else
-                            {
-                                WS.Log("群消息接口没有获取到群信息, 群号码:" + e.Group);
-                                return;
-                            }
-                        }
-                        if (Customize.config.member_enter_send == 1)
-                        {
-                            if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out var nick))
-                            {
-                                nick = Robot.GetNick(e.BeingOperateQQ);
-                                WS.cacheQQ.TryAdd(e.FromQQ, nick);
-                            }
-                            if (!WS.cacheGroup.TryGetValue(e.BeingOperateQQ, out var gn))
-                            {
-                                gn = Robot.GetGroupName(e.Group);
-                                WS.cacheGroup.TryAdd(e.Group, gn);
-                            }
-                            Robot.Send.Group(Customize.config.fg, $"QQ: {e.BeingOperateQQ}\n" +
-                                $"昵称: {nick}\n" +
-                                $"群号: {e.Group}\n" +
-                                $"群名: {gn}\n" +
-                                $"消息内容: \n" +
-                                $"{data}");
-                        }
-                        data.content = "[入群通知]";
-                        WS.postMessage(data);
-                    }
-
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理新增群成员事件时出错, 错误信息:" + ex.Message);
-            }
-        }
-        internal static void GroupLeftMember(GroupMemberChangedArgs e)
-        {
-            try
-            {
-                if (WS.webSocketRunStatus)
-                {
-                    if (e.FromQQ == AppInfo.self)
-                    {
-                        //自己被T
-                    }
-                    else
-                    {
-                        WS.MessageForSend data = new WS.MessageForSend();
-                        data.rid = WS.Rid();
-                        data.from = e.BeingOperateQQ;
-                        data.content = $"[退群通知]:\n入群用户:{data.from}\n入群时间:{DateTime.Now}";
-                        data.qun = e.Group;
-                        //优先从缓存中查找数据
-                        if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out data.fromname))
-                        {
-                            var qqInfo = Robot.GetNick(e.BeingOperateQQ);
-                            if (qqInfo != null)
-                            {
-                                data.fromname = qqInfo;
-                                WS.cacheQQ.TryAdd(e.BeingOperateQQ, qqInfo);
-                            }
-                            else
-                            {
-                                WS.Log("没有获取到QQ详细信息, QQ号码:" + e.BeingOperateQQ);
-                                return;
-                            }
-                        }
-
-                        if (!WS.cacheGroup.TryGetValue(e.Group, out data.qunname))
-                        {
-                            var groupInfo = Robot.GetGroupName(e.Group);
-                            if (groupInfo != null)
-                            {
-                                data.qunname = groupInfo;
-                                WS.cacheGroup.TryAdd(e.Group, groupInfo);
-                            }
-                            else
-                            {
-                                WS.Log("群消息接口没有获取到群信息, 群号码:" + e.Group);
-                                return;
-                            }
-                        }
-                        if (Customize.config.member_leave_send == 1)
-                        {
-                            if (!WS.cacheQQ.TryGetValue(e.BeingOperateQQ, out var nick))
-                            {
-                                nick = Robot.GetNick(e.BeingOperateQQ);
-                                WS.cacheQQ.TryAdd(e.FromQQ, nick);
-                            }
-                            if (!WS.cacheGroup.TryGetValue(e.BeingOperateQQ, out var gn))
-                            {
-                                gn = Robot.GetGroupName(e.FromQQ);
-                                WS.cacheGroup.TryAdd(e.FromQQ, gn);
-                            }
-                            Robot.Send.Group(Customize.config.fg, $"QQ: {e.BeingOperateQQ}\n" +
-                                $"昵称: {nick}\n" +
-                                $"群号: {e.FromQQ}\n" +
-                                $"群名: {gn}\n" +
-                                $"消息内容: \n" +
-                                $"{data.content}");
-                        }
-                        data.content = "[退群通知]";
-                        WS.postMessage(data);
-                    }
-
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理群成员退出事件时出错, 错误信息:" + ex.Message);
-            }
-        }
-        internal static void JoinGroupRequest(RequestAddGroupArgs e)
-        {
-            try
-            {
-                if (WS.webSocketRunStatus)
-                {
-                    WS.MessageForSend data = new WS.MessageForSend();
-                    data.rid = WS.Rid();
-                    data.from = e.QQ;
-                    data.content = "[入群通知]";
-                    data.qun = e.Group;
-                    //优先从缓存中查找数据
-                    if (!WS.cacheQQ.TryGetValue(e.QQ, out data.fromname))
-                    {
-                        var qqInfo = Robot.GetNick(e.QQ);
-                        if (qqInfo != null)
-                        {
-                            data.fromname = qqInfo;
-                            WS.cacheQQ.TryAdd(e.QQ, qqInfo);
-                        }
-                        else
-                        {
-                            WS.Log("群消息接口没有获取到QQ详细信息, QQ号码:" + e.QQ);
-                            return;
-                        }
-                    }
-                    e.Accept();
-
-                    WS.Log("通过群添加请求");
-                    //优先从缓存中查找数据
-                    if (!WS.cacheGroup.TryGetValue(e.Group, out data.qunname))
-                    {
-                        var groupInfo = Robot.GetGroupName(e.Group);
-                        if (groupInfo != null)
-                        {
-                            data.qunname = groupInfo;
-                            WS.cacheGroup.TryAdd(e.Group, groupInfo);
-                        }
-                        else
-                        {
-                            WS.Log("群消息接口没有获取到群信息, 群号码:" + e.Group);
-                            return;
-                        }
-                    }
-
-                    WS.postMessage(data);
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理入群申请时发生未知错误, 错误信息:" + ex.Message);
-            }
-        }
-        internal static void InviteGroupRequest(RequestAddGroupArgs e)
-        {
-            try
-            {
-                if (WS.webSocketRunStatus)
-                {
-                    if (Customize.config.Manager_Group_Invite_Request == 0)
-                    {
-                        e.Accept();
-                    }
-                    else if (Customize.config.Manager_Group_Invite_Request == 1 && Customize.config.Manager_Group_Invite_QQ.Split('&').Contains(e.QQ.ToString()))
-                    {
-                        e.Accept();
-                    }
-                    else if (Customize.config.Manager_Group_Invite_Request == 2)
-                    {
-                        e.Reject();
-                    }
-                    WS.Log("接受群邀请");
-                }
-                else
-                {
-                    WS.Log("WebSocket状态异常");
-                }
-            }
-            catch (Exception ex)
-            {
-                WS.Log("处理新增群成员事件时出错, 错误信息:" + ex.Message);
+                DB.Log("处理群消息时发生未知错误, 错误信息:" + ex.Message);
             }
         }
     }
